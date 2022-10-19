@@ -1,9 +1,9 @@
 from rest_framework.response import Response
 from user_profile_api import mocks
 from requests.auth import HTTPDigestAuth
-import requests, json, utils
+import requests, json
 
-from users_admin.settings import BASE_URL, DEVICE_UUID, ENVIRONMENT, GATEWAY_USER
+from users_admin.settings import BASE_URL, DEVICE_UUID, ENVIRONMENT, GATEWAY_USER, GATEWAY_PASSWORD
 
 def search_users():
     headers = {
@@ -25,7 +25,7 @@ def search_users():
         record_url = f'/ISAPI/AccessControl/UserInfo/Search?format=json&devIndex={DEVICE_UUID}'
         full_url = f'{base_url}{record_url}'
 
-        res = requests.post(full_url, headers=headers, data=payload, auth=HTTPDigestAuth(GATEWAY_USER, utils.get_secret('GATEWAY_PASSWORD')))
+        res = requests.post(full_url, headers=headers, data=payload, auth=HTTPDigestAuth(GATEWAY_USER, GATEWAY_PASSWORD))
 
         data = res.json()
 
@@ -61,7 +61,7 @@ def record_user():
         record_url = f'/ISAPI/AccessControl/UserInfo/Record?format=json&devIndex={DEVICE_UUID}'
         full_url = f'{base_url}{record_url}'
 
-        res = requests.post(full_url, headers=headers, data=payload, auth=HTTPDigestAuth(GATEWAY_USER, utils.get_secret('GATEWAY_PASSWORD')))
+        res = requests.post(full_url, headers=headers, data=payload, auth=HTTPDigestAuth(GATEWAY_USER, GATEWAY_PASSWORD))
 
         data = res.json()
 

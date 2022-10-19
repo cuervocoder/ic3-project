@@ -131,12 +131,15 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'user_profile_api.UserProfile'
 
 # Variable to identify environment 'TEST' or 'PROD' (if 'TEST' use mocked requests)
-ENVIRONMENT = 'TEST'
+ENVIRONMENT = 'PROD'
+
+print('Environment:', ENVIRONMENT)
 
 # Gateway & Device Settings
-GATEWAY_IP = 'http://192.168.0.217'
+GATEWAY_IP = utils.get_secret('GATEWAY_IP')
 GATEWAY_PORT = '8085'
 GATEWAY_USER = 'admin'
+GATEWAY_PASSWORD = utils.get_secret('GATEWAY_PASSWORD')
 DEVICE_UUID = 'D76C6D74-4B20-4BB1-8C4C-B51244DF3026'
 
 BASE_URL = f'{GATEWAY_IP}:{GATEWAY_PORT}'
