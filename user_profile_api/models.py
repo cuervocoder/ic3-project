@@ -54,7 +54,7 @@ class UserProfile(AbstractBaseUser, PermissionsMixin):
     last_name = models.TextField(max_length=100, null=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
-    profile_type = models.ForeignKey("UserProfileType", on_delete=models.CASCADE, null=True)
+    profile_type = models.ForeignKey('UserProfileType', on_delete=models.CASCADE, null=True)
     date_created = models.DateTimeField(auto_now=True, editable=False)
     last_updated = models.DateTimeField(auto_now=True, editable=False)
 

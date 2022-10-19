@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 from pathlib import Path
+
+from django.conf import ENVIRONMENT_VARIABLE
 import utils
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -20,7 +22,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = utils.get_secret("SECRET_KEY")
+SECRET_KEY = utils.get_secret('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -104,7 +106,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
 
@@ -129,10 +130,13 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'user_profile_api.UserProfile'
 
+# Variable to identify environment 'TEST' or 'PROD' (if 'TEST' use mocked requests)
+ENVIRONMENT = 'TEST'
+
 # Gateway & Device Settings
-GATEWAY_IP = '192.168.0.217'
+GATEWAY_IP = 'http://192.168.0.217'
 GATEWAY_PORT = '8085'
 GATEWAY_USER = 'admin'
 DEVICE_UUID = 'D76C6D74-4B20-4BB1-8C4C-B51244DF3026'
 
-BASE_URL = f"{GATEWAY_IP}:{GATEWAY_PORT}"
+BASE_URL = f'{GATEWAY_IP}:{GATEWAY_PORT}'

@@ -10,4 +10,4 @@ def get_secret(setting, secrets=secrets):
     try:
         return secrets[setting]
     except KeyError:
-        raise ImproperlyConfigured("Set the {} setting".format(setting))
+        raise ImproperlyConfigured('Set the {} setting'.format(setting))

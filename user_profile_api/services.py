@@ -1,41 +1,74 @@
 from rest_framework.response import Response
-import requests
-import utils
+from user_profile_api import mocks
+from requests.auth import HTTPDigestAuth
+import requests, json, utils
 
-from users_admin.settings import BASE_URL, DEVICE_UUID, GATEWAY_USER
+from users_admin.settings import BASE_URL, DEVICE_UUID, ENVIRONMENT, GATEWAY_USER
 
-def record_user(self, request):
-    """
+def search_users():
+    headers = {
+        'Content-Type': 'application/json'
+    }    
+
+    payload = json.dumps(
+        {
+            "UserInfoSearchCond": {
+                "searchID": "0",
+                "searchResultPosition": 0,
+                "maxResults": 1
+            }
+        }
+    )
+
+    if ENVIRONMENT == 'PROD':
+        base_url = BASE_URL
+        record_url = f'/ISAPI/AccessControl/UserInfo/Search?format=json&devIndex={DEVICE_UUID}'
+        full_url = f'{base_url}{record_url}'
+
+        res = requests.post(full_url, headers=headers, data=payload, auth=HTTPDigestAuth(GATEWAY_USER, utils.get_secret('GATEWAY_PASSWORD')))
+
+        data = res.json()
+
+        return Response(status=res.status_code, data=data)
+    else:
+        #return mocks.search_users_400()
+        return mocks.search_users_200()
+
+def record_user():
     headers = {
         'Content-Type': 'application/json'
     }
 
-    payload = {
-        "UserInfo": [
-            {
-                "employeeNo": "21",
-                "name": "Juan Perez",
-                "userType": "normal",
-                "Valid": {
-                    "enable": True,
-                    "beginTime": "2017-01-01T00:00:00",
-                    "endTime": "2025-08-01T17:30:08"
+    payload = json.dumps(
+        {
+            "UserInfo": [
+                {
+                    "employeeNo": "21",
+                    "name": "Juan Perez",
+                    "userType": "normal",
+                    "Valid": {
+                        "enable": True,
+                        "beginTime": "2017-01-01T00:00:00",
+                        "endTime": "2025-08-01T17:30:08"
+                    }
                 }
-            }
-        ]
-    }
+            ]
+        }
+    )
 
-    base_url = BASE_URL
-    record_url = f"/ISAPI/AccessControl/UserInfo/Record?format=json&devIndex={DEVICE_UUID}"
-    full_url = f"{base_url}{record_url}"
+    if ENVIRONMENT == 'PROD':
+        base_url = BASE_URL
+        record_url = f'/ISAPI/AccessControl/UserInfo/Record?format=json&devIndex={DEVICE_UUID}'
+        full_url = f'{base_url}{record_url}'
 
-    res = requests.post(full_url, headers=headers, data=payload, auth={GATEWAY_USER, utils.get_secret("GATEWAY_PASSWORD")})
+        res = requests.post(full_url, headers=headers, data=payload, auth=HTTPDigestAuth(GATEWAY_USER, utils.get_secret('GATEWAY_PASSWORD')))
 
-    print('This is the true http resonse: ', res.status_code)
-
-    if res.status_code >= 300:
-        return Response({"error": "Request failed"}, status = res.status_code)
-    else:
         data = res.json()
-        return Response({"status": "success", "data": data})
-    """
+
+        return Response(status=res.status_code, data=data)
+    else:
+        #return mocks.record_user_400()
+        #return mocks.record_user_200_already_exist()
+        return mocks.record_user_200()
+
+
