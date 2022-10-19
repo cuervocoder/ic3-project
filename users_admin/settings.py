@@ -12,21 +12,22 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 from pathlib import Path
 
+from django.conf import ENVIRONMENT_VARIABLE
+import utils
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-lhqz2q$%*56yk+&ci6(8!ft2@63b(5y_6%jd3a1b1034jsez*h'
+SECRET_KEY = utils.get_secret('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -73,7 +74,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'users_admin.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
@@ -81,13 +81,12 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'ic3unrafproject',
-        'USER': 'admin',
-        'PASSWORD': 'root',
+        'USER': 'root',
+        'PASSWORD': utils.get_secret('DB_PASSWORD'),
         'HOST': 'localhost',
         'PORT': '3306',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
@@ -106,7 +105,6 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
@@ -131,3 +129,17 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'user_profile_api.UserProfile'
+
+# Variable to identify environment 'TEST' or 'PROD' (if 'TEST' use mocked requests)
+ENVIRONMENT = 'TEST'
+
+print('Environment:', ENVIRONMENT)
+
+# Gateway & Device Settings
+GATEWAY_IP = utils.get_secret('GATEWAY_IP')
+GATEWAY_PORT = '8085'
+GATEWAY_USER = 'admin'
+GATEWAY_PASSWORD = utils.get_secret('GATEWAY_PASSWORD')
+DEVICE_UUID = 'D76C6D74-4B20-4BB1-8C4C-B51244DF3026'
+
+BASE_URL = f'{GATEWAY_IP}:{GATEWAY_PORT}'
