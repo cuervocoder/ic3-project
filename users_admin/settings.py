@@ -131,7 +131,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'user_profile_api.UserProfile'
 
 # Variable to identify environment 'TEST' or 'PROD' (if 'TEST' use mocked requests)
-ENVIRONMENT = 'PROD'
+ENVIRONMENT = 'TEST'
 
 print('Environment:', ENVIRONMENT)
 
