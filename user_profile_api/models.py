@@ -9,7 +9,12 @@ class UserProfileManager(BaseUserManager):
         self, 
         email, 
         first_name, 
-        last_name, 
+        last_name,
+        dni,
+        address,
+        phone,
+        emergency_phone,
+        auto_increment_id,
         profile_type,
         password=None
     ):
@@ -21,6 +26,11 @@ class UserProfileManager(BaseUserManager):
             email=email,
             first_name=first_name,
             last_name=last_name,
+            dni=dni,
+            address=adress,
+            phone=phone,
+            emergency_phone=emergency_phone,
+            auto_increment_id=auto_increment_id,
             profile_type=profile_type
         )
 
@@ -32,10 +42,16 @@ class UserProfileManager(BaseUserManager):
     def create_superuser(
         self, 
         email,
-        password
+        password,
+        auto_increment_id,
+        phone,
+        emergency_phone
     ):
         user = self.create_user(
             email,
+            auto_increment_id,
+            phone,
+            emergency_phone,
             'superadmin',
             'superadmin',
             UserProfileType.objects.get(description = 'SUPERADMIN'),
@@ -52,6 +68,11 @@ class UserProfile(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(max_length=255, unique=True)
     first_name = models.TextField(max_length=100, null=True)
     last_name = models.TextField(max_length=100, null=True)
+    dni = models.CharField(max_length=100, unique=True, null=True)
+    auto_increment_id = models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')
+    address = models.TextField(max_length=100, null=True)
+    phone = models.TextField(max_length=100, null=True)
+    emergency_phone = models.TextField(max_length=100, null=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     profile_type = models.ForeignKey('UserProfileType', on_delete=models.CASCADE, null=True)
@@ -61,6 +82,7 @@ class UserProfile(AbstractBaseUser, PermissionsMixin):
     objects = UserProfileManager()
 
     USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ['auto_increment_id', 'phone', 'emergency_phone']
 
 class UserProfileType(models.Model):
     description = models.TextField(max_length=100)
