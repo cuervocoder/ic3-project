@@ -1,5 +1,6 @@
-from rest_framework import serializers
+from rest_framework import serializers, fields
 from user_profile_api import models
+
 
 class HelloSerializer(serializers.Serializer):
     name = serializers.CharField(max_length=10)
@@ -11,8 +12,13 @@ class UserProfileSerializer(serializers.ModelSerializer):
             'id', 
             'email', 
             'password',
-            'first_name', 
+            'first_name',
             'last_name', 
+            'dni',
+            'phone',
+            'emergency_phone',
+            'address',
+            'devices_total',
             'is_active', 
             'is_staff',
             'profile_type',
