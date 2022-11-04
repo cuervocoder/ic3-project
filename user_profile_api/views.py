@@ -86,8 +86,8 @@ class UserProfileApiView(APIView):
 
 class UserProfileApiViewDetail(APIView):
     serializer_class = serializers.UserProfileSerializer
-    authentication_classes = (TokenAuthentication,)
-    permission_classes = (permissions.UpdateOwnProfile,)
+    #authentication_classes = (TokenAuthentication,)
+    #permission_classes = (permissions.UpdateOwnProfile,)
 
     def get_object(self, pk):
         try:
