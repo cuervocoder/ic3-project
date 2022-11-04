@@ -78,7 +78,12 @@ class UserProfileApiView(APIView):
             if res.status_code >= 300:
                 raise ValueError('Error perform record!')
             else:                
-                serializer.save()
+                print("Hola test", res)
+                data_user = list(serializer.validated_data.values())
+                print(data_user)
+                print('Esto es', data_user[1])
+                      
+                #serializer.save()
 
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
         

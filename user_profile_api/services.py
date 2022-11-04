@@ -39,7 +39,7 @@ def record_user():
     headers = {
         'Content-Type': 'application/json'
     }
-
+	
     payload = json.dumps(
         {
             "UserInfo": [
@@ -61,10 +61,10 @@ def record_user():
         base_url = BASE_URL
         record_url = f'{URL_RECORD_USER}?format=json&devIndex={DEVICE_UUID}'
         full_url = f'{base_url}{record_url}'
-
-        res = requests.post(full_url, headers=headers, data=payload, auth=HTTPDigestAuth(GATEWAY_USER, GATEWAY_PASSWORD))
-
+        
+        res = requests.post(full_url, headers=headers, data=payload, auth=HTTPDigestAuth(GATEWAY_USER, GATEWAY_PASSWORD))	
         data = res.json()
+        print(serializer.validated_data)
 
         return Response(status=res.status_code, data=data)
     else:
