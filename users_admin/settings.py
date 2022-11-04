@@ -148,16 +148,3 @@ GATEWAY_PASSWORD = utils.get_secret('GATEWAY_PASSWORD')
 DEVICE_UUID = 'D76C6D74-4B20-4BB1-8C4C-B51244DF3026'
 
 BASE_URL = f'{GATEWAY_IP}:{GATEWAY_PORT}'
-
-PASSWORD_HASHERS = [
-  'django.contrib.auth.hashers.PBKDF2PasswordHasher',
-  'django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher',
-  'django.contrib.auth.hashers.Argon2PasswordHasher',
-  'django.contrib.auth.hashers.BCryptSHA256PasswordHasher',
-  'django.contrib.auth.hashers.BCryptPasswordHasher',
-  'django.contrib.auth.hashers.SHA1PasswordHasher',
-  'django.contrib.auth.hashers.MD5PasswordHasher',
-  'django.contrib.auth.hashers.UnsaltedSHA1PasswordHasher',
-  'django.contrib.auth.hashers.UnsaltedMD5PasswordHasher',
-  'django.contrib.auth.hashers.CryptPasswordHasher',
-]
