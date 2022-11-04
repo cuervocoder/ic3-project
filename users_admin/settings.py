@@ -41,7 +41,8 @@ INSTALLED_APPS = [
 
     'rest_framework',
     'rest_framework.authtoken',
-    'user_profile_api'
+    'user_profile_api',
+    'CryptoApp',
 ]
 
 MIDDLEWARE = [
@@ -59,7 +60,7 @@ ROOT_URLCONF = 'users_admin.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -143,3 +144,16 @@ GATEWAY_PASSWORD = utils.get_secret('GATEWAY_PASSWORD')
 DEVICE_UUID = 'D76C6D74-4B20-4BB1-8C4C-B51244DF3026'
 
 BASE_URL = f'{GATEWAY_IP}:{GATEWAY_PORT}'
+
+PASSWORD_HASHERS = [
+  'django.contrib.auth.hashers.PBKDF2PasswordHasher',
+  'django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher',
+  'django.contrib.auth.hashers.Argon2PasswordHasher',
+  'django.contrib.auth.hashers.BCryptSHA256PasswordHasher',
+  'django.contrib.auth.hashers.BCryptPasswordHasher',
+  'django.contrib.auth.hashers.SHA1PasswordHasher',
+  'django.contrib.auth.hashers.MD5PasswordHasher',
+  'django.contrib.auth.hashers.UnsaltedSHA1PasswordHasher',
+  'django.contrib.auth.hashers.UnsaltedMD5PasswordHasher',
+  'django.contrib.auth.hashers.CryptPasswordHasher',
+]
