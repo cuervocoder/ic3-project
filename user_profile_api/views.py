@@ -73,11 +73,17 @@ class UserProfileApiView(APIView):
         serializer = self.serializer_class(data=request.data)
 
         if serializer.is_valid():
-            res = services.record_user()
+            res = services.record_user(serializer)
 
             if res.status_code >= 300:
                 raise ValueError('Error perform record!')
             else:                
+                print("Hola test", res)
+                print('Esto es', serializer.validated_data)
+                begin_time = serializer.validated_data["begin_time"]
+                begin_time_final = begin_time.strftime("%Y-%m-%dT%H:%M:%S")
+                print(begin_time_final)
+                      
                 serializer.save()
 
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -86,8 +92,8 @@ class UserProfileApiView(APIView):
 
 class UserProfileApiViewDetail(APIView):
     serializer_class = serializers.UserProfileSerializer
-    #authentication_classes = (TokenAuthentication,)
-    #permission_classes = (permissions.UpdateOwnProfile,)
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (permissions.UpdateOwnProfile,)
 
     def get_object(self, pk):
         try:
