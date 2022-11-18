@@ -64,6 +64,7 @@ class UserProfileApiView(APIView):
             
             print(r['UserInfoSearch'])
 
+
             users = models.UserProfile.objects.all()
             serializer = serializers.UserProfileSerializer(users, many=True)
             
@@ -73,11 +74,17 @@ class UserProfileApiView(APIView):
         serializer = self.serializer_class(data=request.data)
 
         if serializer.is_valid():
-            res = services.record_user()
+            res = services.record_user(serializer)
 
             if res.status_code >= 300:
                 raise ValueError('Error perform record!')
             else:                
+                print("Hola test", res)
+                print('Esto es', serializer.validated_data)
+                begin_time = serializer.validated_data["begin_time"]
+                begin_time_final = begin_time.strftime("%Y-%m-%dT%H:%M:%S")
+                print(begin_time_final)
+                      
                 serializer.save()
 
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -86,8 +93,8 @@ class UserProfileApiView(APIView):
 
 class UserProfileApiViewDetail(APIView):
     serializer_class = serializers.UserProfileSerializer
-    #authentication_classes = (TokenAuthentication,)
-    #permission_classes = (permissions.UpdateOwnProfile,)
+   # authentication_classes = (TokenAuthentication,)
+   # permission_classes = (permissions.UpdateOwnProfile,)
 
     def get_object(self, pk):
         try:
@@ -106,6 +113,7 @@ class UserProfileApiViewDetail(APIView):
         serializer = self.serializer_class(user, data=request.data)
 
         if serializer.is_valid():
+            res = services.modify_user(serializer)
             serializer.save()
 
             return Response(serializer.data)
@@ -114,6 +122,11 @@ class UserProfileApiViewDetail(APIView):
 
     def delete(self, request, pk):
         user = self.get_object(pk)
-        user.delete()
+        
+        res = services.delete_user()
+        if res.status_code >= 300:
+            raise ValueError('Error perform search!')
+        else:
+            user.delete()
 
         return Response(status=status.HTTP_204_NO_CONTENT)

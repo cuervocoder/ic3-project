@@ -1,5 +1,6 @@
-from rest_framework import serializers
+from rest_framework import serializers, fields
 from user_profile_api import models
+
 
 class HelloSerializer(serializers.Serializer):
     name = serializers.CharField(max_length=10)
@@ -11,11 +12,18 @@ class UserProfileSerializer(serializers.ModelSerializer):
             'id', 
             'email', 
             'password',
-            'first_name', 
+            'first_name',
             'last_name', 
+            'dni',
+            'phone',
+            'emergency_phone',
+            'address',
+            'devices_total',
             'is_active', 
             'is_staff',
             'profile_type',
+            'begin_time',
+            'end_time',
             'date_created',
             'last_updated'
         )
@@ -28,16 +36,15 @@ class UserProfileSerializer(serializers.ModelSerializer):
             }
         }
 
-    def create(self, validated_data):
+    def create_user(self, validated_data):
         user = models.UserProfile.objects.create_user(
             email=validated_data['email'],
             first_name=validated_data['first_name'],
             last_name=validated_data['last_name'],
-            profile_type=validated_data['profile_type'],
         )
 
         user.set_password(validated_data['password'])
-        user.save()
+        user.save(using=self._db)
         
         return user
 
