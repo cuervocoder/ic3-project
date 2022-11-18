@@ -65,7 +65,7 @@ class UserProfile(AbstractBaseUser, PermissionsMixin):
     date_created = models.DateTimeField(auto_now=True, editable=False)
     last_updated = models.DateTimeField(auto_now=True, editable=False)
     dni = models.CharField(max_length=100, unique=True, null=True)
-    id = models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')
+    device_id = models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')
     address = models.TextField(max_length=100, null=True)
     phone = models.TextField(max_length=100, null=True, blank=True)
     emergency_phone = models.TextField(max_length=100, null=True)
@@ -82,3 +82,9 @@ class UserProfileType(models.Model):
 
     def __str__(self):
         return self.description
+
+class DeviceIds(models.Model):
+    id2 = models.BigIntegerField(null=True)
+ 
+    def __str__(self):
+        return self.id

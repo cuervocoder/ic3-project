@@ -64,6 +64,7 @@ class UserProfileApiView(APIView):
             
             print(r['UserInfoSearch'])
 
+
             users = models.UserProfile.objects.all()
             serializer = serializers.UserProfileSerializer(users, many=True)
             
@@ -92,8 +93,8 @@ class UserProfileApiView(APIView):
 
 class UserProfileApiViewDetail(APIView):
     serializer_class = serializers.UserProfileSerializer
-    authentication_classes = (TokenAuthentication,)
-    permission_classes = (permissions.UpdateOwnProfile,)
+   # authentication_classes = (TokenAuthentication,)
+   # permission_classes = (permissions.UpdateOwnProfile,)
 
     def get_object(self, pk):
         try:
@@ -112,6 +113,7 @@ class UserProfileApiViewDetail(APIView):
         serializer = self.serializer_class(user, data=request.data)
 
         if serializer.is_valid():
+            res = services.modify_user(serializer)
             serializer.save()
 
             return Response(serializer.data)
@@ -120,6 +122,11 @@ class UserProfileApiViewDetail(APIView):
 
     def delete(self, request, pk):
         user = self.get_object(pk)
-        user.delete()
+        
+        res = services.delete_user()
+        if res.status_code >= 300:
+            raise ValueError('Error perform search!')
+        else:
+            user.delete()
 
         return Response(status=status.HTTP_204_NO_CONTENT)
